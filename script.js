@@ -15,13 +15,6 @@ const display = document.querySelector(".currInput");
 const topDisplay = document.querySelector(".inputSoFar");
 display.textContent = displayInput;
 
-const allButtons = document.querySelectorAll("button");
-allButtons.forEach((button)=>{
-    button.addEventListener("click", function(e){
-        lastInput = (e.target).textContent;
-    })
-});
-//This detects the last button pressed on the calculator
 
 
 function operate(operator, a ,b) {
@@ -40,7 +33,8 @@ function operate(operator, a ,b) {
 }
 
 function isNum(lastInput){
-    if (lastInput.includes("0123456789")){
+    let numbers = "0123456789";
+    if (numbers.includes(lastInput)){
         return true;
     }
     else {
@@ -49,7 +43,8 @@ function isNum(lastInput){
 }
 
 function isOperator(lastInput){
-    if (lastInput.includes("+*/-")){
+    let operators = "+/-*";
+    if (operators.includes(lastInput)){
         return true;
     }
     else {
@@ -72,18 +67,30 @@ numberButtons.forEach((button)=>{
     button.addEventListener("click",function(e){
         currentInput = updateDisplay(currentInput, (e.target).textContent);
         display.textContent = currentInput;
+
+
+        lastInput = (e.target).textContent;
     })
+
+
+    
 });
 
 const clearInput = document.querySelector("#clear");
 clearInput.addEventListener("click",function(e){
     currentInput = "0";
+    currentTotal = undefined;
     display.textContent = currentInput;
+    topDisplay.textContent = "";
+    secondNum = undefined;
+    operator = undefined;
+    firstNum = "0";
 });
 
 const operateButtons = document.querySelectorAll(".operator");
 operateButtons.forEach((button)=>{
     button.addEventListener("click", function(e){
+
         if (typeof(operator) != 'string'){
                    
             operator = (e.target).textContent;
@@ -96,9 +103,13 @@ operateButtons.forEach((button)=>{
 
         else if (operator == '='){
             operator = (e.target).textContent;
-            topDisplay.textContent = firstNum + " " + operator;
+            topDisplay.textContent = currentTotal + " " + operator;
+            firstNum = currentTotal;
         }
         else{
+            // if(isNum(currentTotal)){
+
+            // }
             secondNum = Number(currentInput);
             currentInput = "0";
             currentTotal = operate(operator,firstNum,secondNum);            
@@ -107,7 +118,12 @@ operateButtons.forEach((button)=>{
             topDisplay.textContent = firstNum + " " + operator + " " + secondNum + " = " + currentTotal;
             firstNum = currentTotal;
         }
+
+        lastInput = (e.target).textContent;
     })
+
+
+    
 })
 
 const eval = document.querySelector(".eval");
@@ -118,9 +134,28 @@ eval.addEventListener("click", function(e){
         topDisplay.textContent = currentInput;
         currentInput = "0";
         display.textContent = currentInput;
-        firstNum = currentTotal;
-        
+        firstNum = currentTotal;   
     }
+    if ((isOperator(operator)) && (isNum(lastInput))){
+        
+        secondNum = currentInput;
+        currentTotal = operate(operator, firstNum, secondNum);
+        topDisplay.textContent = currentTotal;
+        currentInput = "0";
+        display.textContent = currentInput;
+        operator = "=";
+    }
+    if (isOperator(lastInput)){
+        topDisplay.textContent = "Error, please press a number before evaluating.";    
+        currentInput = "0";        
+        currentTotal = 'undefined';
+        display.textContent = currentInput;            
+    }
+    lastInput = (e.target).textContent;
+
+
+    
+
 });
 
 

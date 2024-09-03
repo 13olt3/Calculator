@@ -24,3 +24,7 @@ need to inplement equals button
 
 Sept 3 commit:
 number -> evalu -> operator  works
+
+Sept 3 commit:
+finished eval functionality
+need to other TOP requirements
