@@ -22,3 +22,5 @@ Got num > operator > num > operator to work
 need to fix num > operator > operator
 need to inplement equals button
 
+Sept 3 commit:
+number -> evalu -> operator  works
