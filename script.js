@@ -1,5 +1,5 @@
 
-let addition = (A,B) => A+B;
+let addition = (A,B) => Number(A)+Number(B);
 let subtraction = (A,B) => A-B;
 let multiply = (A,B) => A * B;
 let division = (A,B) => A / B;
@@ -68,12 +68,8 @@ numberButtons.forEach((button)=>{
         currentInput = updateDisplay(currentInput, (e.target).textContent);
         display.textContent = currentInput;
 
-
         lastInput = (e.target).textContent;
-    })
-
-
-    
+    })    
 });
 
 const clearInput = document.querySelector("#clear");
@@ -90,6 +86,8 @@ clearInput.addEventListener("click",function(e){
 const operateButtons = document.querySelectorAll(".operator");
 operateButtons.forEach((button)=>{
     button.addEventListener("click", function(e){
+        
+
 
         if (typeof(operator) != 'string'){
                    
@@ -112,11 +110,18 @@ operateButtons.forEach((button)=>{
             // }
             secondNum = Number(currentInput);
             currentInput = "0";
-            currentTotal = operate(operator,firstNum,secondNum);            
-            operator = (e.target).textContent;
-            display.textContent = currentInput;
-            topDisplay.textContent = firstNum + " " + operator + " " + secondNum + " = " + currentTotal;
-            firstNum = currentTotal;
+            if ((operator == '/') && secondNum == 0){
+                topDisplay.textContent = "Nice try dividing by 0.";
+            }
+            else{
+                currentTotal = shorten(operate(operator,firstNum,secondNum));            
+                
+                display.textContent = currentInput;
+                topDisplay.textContent = firstNum + " " + operator + " " + secondNum + " = " + currentTotal;
+                operator = (e.target).textContent;
+                
+                firstNum = currentTotal;
+            }
         }
 
         lastInput = (e.target).textContent;
@@ -128,10 +133,11 @@ operateButtons.forEach((button)=>{
 
 const eval = document.querySelector(".eval");
 eval.addEventListener("click", function(e){
+
     if ((typeof(currentInput) == 'string') && (typeof(operator) != 'string') && (typeof(secondNum) != 'string')){
         operator = "=";
         currentTotal = currentInput;  
-        topDisplay.textContent = currentInput;
+        topDisplay.textContent = firstNum + " " + operator + " " + secondNum + " = " + currentTotal;
         currentInput = "0";
         display.textContent = currentInput;
         firstNum = currentTotal;   
@@ -139,11 +145,16 @@ eval.addEventListener("click", function(e){
     if ((isOperator(operator)) && (isNum(lastInput))){
         
         secondNum = currentInput;
-        currentTotal = operate(operator, firstNum, secondNum);
-        topDisplay.textContent = currentTotal;
-        currentInput = "0";
-        display.textContent = currentInput;
-        operator = "=";
+        if ((operator == '/') && secondNum == 0){
+            topDisplay.textContent = "Nice try dividing by 0.";
+        }
+        else{
+            currentTotal = shorten(operate(operator, firstNum, secondNum));
+            topDisplay.textContent = firstNum + " " + operator + " " + secondNum + " = " + currentTotal;
+            currentInput = "0";
+            display.textContent = currentInput;
+            operator = "=";
+        }
     }
     if (isOperator(lastInput)){
         topDisplay.textContent = "Error, please press a number before evaluating.";    
@@ -157,6 +168,24 @@ eval.addEventListener("click", function(e){
     
 
 });
+
+function shorten(inputNum){
+    let shortNum = inputNum.toString();
+    let wholeNum = shortNum;
+    let decimalNum = shortNum;
+    if (shortNum.includes(".")){
+        let decimalPos = shortNum.indexOf('.');
+        wholeNum = shortNum.substring(0, decimalPos);
+        decimalNum = shortNum.substring((decimalPos+1), shortNum.length);
+        while ((wholeNum.length) + (decimalNum.length) > 10 && (decimalNum.length > 2)){
+            decimalNum = decimalNum.substring(0,(decimalNum.length -1));
+        }
+        return Number(wholeNum+"."+decimalNum);
+    }
+    return inputNum;
+
+    
+}
 
 
 
