@@ -22,4 +22,14 @@
     align-self: flex-end;
 }
 
+button{
+    margin: 3px;
+}
+.operator{
+    background:rgb(98, 230, 219);
+}
+.decimal{
+    padding-left: 8px;
+    padding-right: 8px;
+}
 

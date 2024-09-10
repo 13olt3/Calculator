@@ -32,3 +32,7 @@ need to other TOP requirements
 Sept 7 commit:
 Added snarky message for division by 0.
 Added a function to shorten really long decimal numbers (does not round)
+
+Sept 10 commit:
+colored operator buttons
+added del and decimal buttons and functionality

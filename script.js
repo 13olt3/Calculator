@@ -137,10 +137,11 @@ eval.addEventListener("click", function(e){
     if ((typeof(currentInput) == 'string') && (typeof(operator) != 'string') && (typeof(secondNum) != 'string')){
         operator = "=";
         currentTotal = currentInput;  
-        topDisplay.textContent = firstNum + " " + operator + " " + secondNum + " = " + currentTotal;
+        firstNum = currentTotal;  
+        topDisplay.textContent = firstNum + " = " + currentTotal;
         currentInput = "0";
         display.textContent = currentInput;
-        firstNum = currentTotal;   
+         
     }
     if ((isOperator(operator)) && (isNum(lastInput))){
         
@@ -183,9 +184,43 @@ function shorten(inputNum){
         return Number(wholeNum+"."+decimalNum);
     }
     return inputNum;
-
     
 }
+
+const decimal = document.querySelector(".decimal");
+decimal.addEventListener("click", function(e){
+    if (!(currentInput.includes("."))){
+    currentInput = updateDisplay(currentInput, (e.target).textContent);
+    display.textContent = currentInput;
+    lastInput = (e.target).textContent;
+    }    
+});
+
+const backspace = document.querySelector(".backspace");
+backspace.addEventListener("click", function(e){
+    if ((currentInput.length == 1)) {
+        currentInput = 0;
+        display.textContent = currentInput;      
+        
+    }
+    if (currentInput.length > 1) {
+        currentInput = currentInput.substring(0, currentInput.length -1);
+        display.textContent = currentInput;      
+        
+    }
+    if ((isOperator(lastInput))){
+        operator = undefined;
+        currentInput = firstNum.toString();
+        topDisplay.textContent = undefined;
+        display.textContent= currentInput; 
+        
+    }
+
+
+    lastInput = (e.target).textContent;
+    
+});
+
 
 
 
