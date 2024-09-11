@@ -221,6 +221,13 @@ backspace.addEventListener("click", function(e){
     
 });
 
+window.addEventListener("keydown", function(e){
+    const buttonPress = document.querySelector(`button[data-key="${e.keyCode}"]`);
+    if (!buttonPress) return;
+    console.log(buttonPress);
+    buttonPress.click();
+
+});
 
 
 
